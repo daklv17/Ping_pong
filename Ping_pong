@@ -9,6 +9,20 @@ background = transform.scale(image.load("fon.png"), (win_width, win_height))
 
 class GameSprite(sprite.Sprite):
 
+   def __init__(self, player_image, player_x, player_y, player_speed,player_speedn2):
+       super().__init__()
+       self.image = transform.scale(image.load(player_image), (60, 60))
+       self.speed = player_speed
+       self.rect = self.image.get_rect()
+       self.rect.x = player_x
+       self.rect.y = player_y
+       self.speed2 = player_speedn2
+
+   def reset(self):
+       window.blit(self.image, (self.rect.x, self.rect.y))
+
+class GameSprite2(sprite.Sprite):
+
    def __init__(self, player_image, player_x, player_y, player_speed):
        super().__init__()
        self.image = transform.scale(image.load(player_image), (40, 140))
@@ -20,21 +34,8 @@ class GameSprite(sprite.Sprite):
    def reset(self):
        window.blit(self.image, (self.rect.x, self.rect.y))
 
-class GameSprite2(sprite.Sprite):
 
-   def __init__(self, player_image, player_x, player_y, player_speed):
-       super().__init__()
-       self.image = transform.scale(image.load(player_image), (60, 60))
-       self.speed = player_speed
-       self.rect = self.image.get_rect()
-       self.rect.x = player_x
-       self.rect.y = player_y
-
-   def reset(self):
-       window.blit(self.image, (self.rect.x, self.rect.y))
-
-
-class Player(GameSprite):
+class Player(GameSprite2):
     def update_l(self):
         keys = key.get_pressed()
         if keys[K_w] and self.rect.y > 5:
@@ -48,16 +49,19 @@ class Player(GameSprite):
         if keys[K_DOWN] and self.rect.y < win_height - 140:
             self.rect.y += self.speed
 
-class Bullet(GameSprite2):
+class Bullet(GameSprite):
    def update(self):
-       self.rect.y += self.speed
+       self.rect.y += self.speed2
        self.rect.x += self.speed
-       if self.rect.y < 0:
-           self.kill() 
+       if self.rect.y < 0 or self.rect.y > 730:
+           self.speed2*=-1
+
+
+
 
 raketka1 = Player('platform.png',10,10,5)
 raketka2 = Player('platform.png',840,10,5)
-ball = Bullet('ball.png',200,200,2)
+ball = Bullet('ball.png',200,200,4,2)
 rackets = sprite.Group()
 rackets.add(raketka1)
 rackets.add(raketka1)
