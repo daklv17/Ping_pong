@@ -57,8 +57,6 @@ class Bullet(GameSprite):
            self.speed2*=-1
 
 
-
-
 raketka1 = Player('platform.png',10,10,5)
 raketka2 = Player('platform.png',840,10,5)
 ball = Bullet('ball.png',200,200,4,2)
@@ -75,12 +73,11 @@ clock = time.Clock()
 FPS = 60
 
 
-
 font.init()
 font1 = font.Font(None,36)
 font = font.Font(None, 70)
-win = font.render('YOU WIN!', True, (200, 210, 10))
-lose = font.render('YOU LOSE!', True, (180, 0, 0))
+lose1 = font.render('Player 1 lose!', True, (180, 0, 0))
+lose2 = font.render('Player 2 lose!', True, (180, 0, 0))
 
 while game:
     for e in event.get():
@@ -102,10 +99,11 @@ while game:
         raketka1.reset()
         raketka2.reset()
         ball.reset()
+
+    if ball.rect.x < 0:
+        window.blit(lose1,(300,360))
+    if ball.rect.x > 840:
+        window.blit(lose2,(300,360))
         
-
-
-
-
     display.update()
     clock.tick(FPS)
